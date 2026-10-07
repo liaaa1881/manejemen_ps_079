@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Rental PS Admin - Manajemen Master Unit PlayStation </title>
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<style>code{color:#212529;background:#f8f9fc;border:1px solid #e3e6f0;padding:.1rem .35rem;border-radius:.2rem;font-size:80%}.table td,.table th{vertical-align:middle}.page-title i{color:#4e73df}</style>
+</head><body id="page-top"><div id="wrapper">
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html"><div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-graduation-cap"></i></div><div class="sidebar-brand-text mx-3">Rental PS <sup>Admin</sup></div></a>
+<hr class="sidebar-divider my-0">
+<li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+<hr class="sidebar-divider"><div class="sidebar-heading">Master Data</div>
+<li class="nav-item active"><a class="nav-link" href="prodi.html"><i class="fas fa-fw fa-university"></i> <span>Master Unit PlayStation</span></a></li>
+<hr class="sidebar-divider"><div class="sidebar-heading">Transaksi Sewa</div>
+<li class="nav-item"><a class="nav-link" href="penilaian.html"><i class="fas fa-fw fa-clipboard-list"></i> <span>Transaksi Sewa</span></a></li>
+<hr class="sidebar-divider d-none d-md-block">
+<div class="text-center d-none d-md-inline w-100"><button class="rounded-circle border-0" id="sidebarToggle"></button></div>
+</ul>
+<div id="content-wrapper" class="d-flex flex-column"><div id="content">
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"><i class="fa fa-bars"></i></button>
+<ul class="navbar-nav ml-auto"><li class="nav-item"><a class="nav-link" href="#"><span class="mr-2 d-none d-lg-inline small text-gray-600">Dr. Dosen Pengampuh, M.Kom</span>
+<img class="img-profile rounded-circle" src="img/undraw_profile.svg"></a></li></ul></nav>
+<div class="container-fluid">
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<h1 class="h3 mb-0 text-gray-800 page-title"><i class="fas fa-university"></i> Manajemen Master Unit PlayStation</h1>
+<a href="#" class="btn btn-primary btn-sm shadow-sm"><i class="fas fa-plus-circle fa-sm"></i> Tambah Unit PlayStation</a></div>
+<div class="card shadow mb-4"><div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Daftar Unit PlayStation</h6></div>
+<div class="card-body"><div class="table-responsive">
+<table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+<thead class="thead-dark"><tr><th>ID</th><th>Nama Unit</th><th>Tipe Console</th><th>Harga/Jam</th><th>Status</th><th>Aksi</th></tr></thead><tbody>
+<tr><td>#1</td><td><code>PS5 - Room VVIP 1</code></td><td class="font-weight-bold text-gray-800">PS5</td><td>RP. 20.000</td><td>Tersedia</td><td class="text-center"><a href="#" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a> <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a></td></tr>
+<tr><td>#2</td><td><code>PS4 - Room Reguler 1</code></td><td class="font-weight-bold text-gray-800">PS4</td><td>Rp. 12.000</td><td>Disewa</td><td class="text-center"><a href="#" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a> <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a></td></tr>
+<tr><td>#3</td><td><code>PS4 - Room Reguler 2</code></td><td class="font-weight-bold text-gray-800">PS4</td><td>RP. 12.000</td><td>Tersedia</td><td class="text-center"><a href="#" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a> <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a></td></tr>
+<tr><td>#4</td><td><code>PS3 - Retro Corner</code></td><td class="font-weight-bold text-gray-800">PS3</td><td>RP. 8.000</td><td>Tersedia</td><td class="text-center"><a href="#" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a> <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a></td></tr >
+</tbody></table></div></div></div></div></div>
+<footer class="sticky-footer bg-white"><div class="container my-auto"><div class="text-center small"><span>Copyright &copy; Rental PlayStation 2026</span></div></div></footer></div></div>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script>$(document).ready(function(){$("#dataTable").DataTable({columnDefs:[{orderable:false,targets:-1}]});});</script>
+</body></html>

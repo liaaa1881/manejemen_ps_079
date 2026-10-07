@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Rental PS Admin - Master Mahasiswa (Konsumsi API)</title>
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<style>
+code{color:#212529;background:#f8f9fc;border:1px solid #e3e6f0;padding:.1rem .35rem;border-radius:.2rem;font-size:80%}
+.table td,.table th{vertical-align:middle}
+.page-title i{color:#b717db}
+.api-chip{font-size:.7rem;letter-spacing:.03em}
+</style>
+</head><body id="page-top"><div id="wrapper">
+
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html"><div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-graduation-cap"></i></div><div class="sidebar-brand-text mx-3">Rental PS <sup>Admin</sup></div></a>
+<hr class="sidebar-divider my-0">
+<li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+<hr class="sidebar-divider"><div class="sidebar-heading">Master Data</div>
+<li class="nav-item"><a class="nav-link" href="prodi.html"><i class="fas fa-fw fa-university"></i> <span>Manajemen Master Unit</span></a></li>
+<hr class="sidebar-divider"><div class="sidebar-heading">Transaksi</div>
+<li class="nav-item"><a class="nav-link" href="penilaian.html"><i class="fas fa-fw fa-clipboard-list"></i> <span>Transaksi Sewa</span></a></li>>
+
+<div id="content-wrapper" class="d-flex flex-column"><div id="content">
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"><i class="fa fa-bars"></i></button>
+<ul class="navbar-nav ml-auto"><li class="nav-item"><a class="nav-link" href="#"><span class="mr-2 d-none d-lg-inline small text-gray-600">Dr. Dosen Pengampuh, M.Kom</span>
+<img class="img-profile rounded-circle" src="img/undraw_profile.svg"></a></li></ul></nav>
+
+<div class="container-fluid">
+
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+  </div>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+          <thead class="thead-dark"><tr>
+          </tr></thead>
+          <tbody><tr><td colspan="8" class="text-center py-4"><i class="fas fa-spinner fa-spin mr-2"></i>Memuat data dari API...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<footer class="sticky-footer bg-white"><div class="container my-auto"><div class="text-center small"><span>SIAKAD &copy; Tugas Konsumsi API &mdash; Master Mahasiswa 2026</span></div></div></footer>
+</div></div>
+
+<a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+
+
+<datalist id="listJurusan"><option value="Teknik Informatika"><option value="Teknik Komputer"><option value="Sistem Informasi"><option value="Teknologi Informasi"><option value="Sains Data"><option value="Rekayasa Perangkat Lunak"><option value="Robotika"></datalist>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="js/api.js"></script>
+<script>
+(function () {
+  "use strict";
+  const COLS = 8;
+  let editId = null;
+  let hapusId = null;
+
+  /* ---------------------------------------------------------- READ (index) */
+  async function muatData() {
+    drawTable("#dataTable", loadingRow(COLS));
+    try {
+      const rows = await api.get("/mahasiswa/read.php");
+      const data = Array.isArray(rows) ? rows : [];
+      if (!data.length) {
+        drawTable("#dataTable", emptyRow(COLS, "Belum ada mahasiswa. Klik \"Tambah Mahasiswa\"."));
+        return;
+      }
+      const html = data.map(function (r, i) {
+        return "<tr>" +
+          "<td>" + (i + 1) + "</td>" +
+          "<td><code>" + escapeHtml(r.nim) + "</code></td>" +
+          "<td><strong>" + escapeHtml(r.nama) + "</strong><br><small class='text-muted'>ID: " + escapeHtml(r.id) + "</small></td>" +
+          "<td>" + escapeHtml(r.jurusan) + "</td>" +
+          "<td class='text-center'>" + escapeHtml(r.angkatan) + "</td>" +
+          "<td><a href='mailto:" + escapeHtml(r.email) + "' class='text-primary'>" + escapeHtml(r.email) + "</a></td>" +
+          "<td>" + escapeHtml(r.telepon) + "</td>" +
+          "<td class='text-center'>" +
+            "<button class='btn btn-info btn-sm btn-detail' data-id='" + escapeHtml(r.id) + "' title='Detail'><i class='fas fa-eye'></i></button> " +
+            "<button class='btn btn-warning btn-sm btn-edit' data-id='" + escapeHtml(r.id) + "' title='Edit'><i class='fas fa-edit'></i></button> " +
+            "<button class='btn btn-danger btn-sm btn-hapus' data-id='" + escapeHtml(r.id) + "' data-nama='" + escapeHtml(r.nama) + "' title='Hapus'><i class='fas fa-trash'></i></button>" +
+          "</td></tr>";
+      }).join("");
+      drawTable("#dataTable", html);
+    } catch (e) {
+      drawTable("#dataTable", errorRow(COLS, e.message));
+      showToast(e.message, "danger");
+    }
+  }
+
+  /* -------------------------------------------------------------- CREATE */
+  function bukaTambah() {
+    editId = null;
+    resetForm("formMhs");
+    $("#formModalTitle").html('<i class="fas fa-plus-circle mr-1"></i> Tambah Mahasiswa');
+    $("#btnSimpan").html('<i class="fas fa-save mr-1"></i> Simpan');
+    $("#formModal").modal("show");
+  }
+
+  /* --------------------------------------------------------------- UPDATE */
+  function bukaEdit(id) {
+    api.get("/mahasiswa/detail.php", { id: id }).then(function (r) {
+      editId = r.id;
+      setFormValues("formMhs", r);
+      $("#formModalTitle").html('<i class="fas fa-edit mr-1"></i> Edit Mahasiswa #' + escapeHtml(r.id));
+      $("#btnSimpan").html('<i class="fas fa-save mr-1"></i> Perbarui');
+      $("#formModal").modal("show");
+    }).catch(function (e) { showToast(e.message, "danger"); });
+  }
+
+  /* --------------------------------------------------------------- DELETE */
+  function bukaHapus(id, nama) {
+    hapusId = id;
+    $("#hapusNama").text(nama);
+    $("#hapusModal").modal("show");
+  }
+
+  /* --------------------------------------------------------------- DETAIL */
+  function bukaDetail(id) {
+    $("#detailBody").html('<div class="text-center py-3"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>');
+    $("#detailModal").modal("show");
+    api.get("/mahasiswa/detail.php", { id: id }).then(function (r) {
+      $("#detailBody").html(
+        '<table class="table table-sm table-bordered mb-0">' +
+        '<tr><th style="width:40%">ID</th><td><code>' + escapeHtml(r.id) + '</code></td></tr>' +
+        '<tr><th>NIM</th><td><code>' + escapeHtml(r.nim) + '</code></td></tr>' +
+        '<tr><th>Nama</th><td>' + escapeHtml(r.nama) + '</td></tr>' +
+        '<tr><th>Jurusan</th><td>' + escapeHtml(r.jurusan) + '</td></tr>' +
+        '<tr><th>Angkatan</th><td>' + escapeHtml(r.angkatan) + '</td></tr>' +
+        '<tr><th>Email</th><td>' + escapeHtml(r.email) + '</td></tr>' +
+        '<tr><th>Telepon</th><td>' + escapeHtml(r.telepon) + '</td></tr>' +
+        '<tr><th>Terdaftar</th><td>' + formatDate(r.created_at) + '</td></tr>' +
+        '</table>'
+      );
+    }).catch(function (e) {
+      $("#detailBody").html('<div class="alert alert-danger mb-0">' + escapeHtml(e.message) + "</div>");
+    });
+  }
+
+  /* ------------------------------------------------------ submit form */
+  $("#formMhs").on("submit", function (ev) {
+    ev.preventDefault();
+    const body = getFormValues("formMhs");
+    if (editId !== null) body.id = editId;
+
+    const url = editId !== null ? "/mahasiswa/update.php" : "/mahasiswa/create.php";
+    $("#btnSimpan").prop("disabled", true).html('<i class="fas fa-spinner fa-spin mr-1"></i> Menyimpan...');
+
+    api.post(url, body).then(function (res) {
+      showToast((res && res.message) || "Data berhasil disimpan.", "success");
+      $("#formModal").modal("hide");
+      muatData();
+    }).catch(function (e) {
+      showToast(e.message, "danger");
+    }).finally(function () {
+      $("#btnSimpan").prop("disabled", false).html(
+        editId !== null ? '<i class="fas fa-save mr-1"></i> Perbarui' : '<i class="fas fa-save mr-1"></i> Simpan'
+      );
+    });
+  });
+
+  $("#btnHapusYa").on("click", function () {
+    const id = hapusId;
+    $("#btnHapusYa").prop("disabled", true);
+    api.del("/mahasiswa/delete.php", { id: id }).then(function (res) {
+      showToast((res && res.message) || "Data dihapus.", "success");
+      $("#hapusModal").modal("hide");
+      muatData();
+    }).catch(function (e) {
+      showToast(e.message, "danger");
+    }).finally(function () {
+      $("#btnHapusYa").prop("disabled", false);
+      hapusId = null;
+    });
+  });
+
+  /* ------------------------------------------------------ event delegation */
+  $("#dataTable").on("click", ".btn-edit", function () { bukaEdit(this.dataset.id); });
+  $("#dataTable").on("click", ".btn-hapus", function () { bukaHapus(this.dataset.id, this.dataset.nama); });
+  $("#dataTable").on("click", ".btn-detail", function () { bukaDetail(this.dataset.id); });
+  $("#btnTambah").on("click", bukaTambah);
+  $("#btnMuatUlang").on("click", muatData);
+
+  /* ----------------------------------------------------------- cek kesehatan API */
+  api.get("/mahasiswa/read.php").then(function (d) {
+    $("#apiStatus").html('<i class="fas fa-circle text-success"></i> API Terhubung &middot; ' + (Array.isArray(d) ? d.length : 0) + ' data');
+  }).catch(function (e) {
+    $("#apiStatus").html('<i class="fas fa-circle text-danger"></i> API Error');
+    showToast(e.message, "danger");
+  });
+
+  muatData();
+})();
+</script>
+</body></html>
